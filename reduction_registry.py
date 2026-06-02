@@ -76,8 +76,8 @@ def run_reductions_for_fold(
 
     # ARPDMF：按 (k,mu) 每折缓存 E_mat；折内仅对 δ 三阶段约简计入 fold 耗时；prepare 耗时记入 arpdmf_prepare_times_fold
     if "ARPDMF" in enabled_algos:
-        # arpdmf_train_df = train_df if train_df_raw is None else train_df_raw # [print_notice]
-        arpdmf_train_df = train_df  # arpdmf事前归一化:最新：arpdmf跑归一化
+        arpdmf_train_df = train_df if train_df_raw is None else train_df_raw # [print_notice]
+        # arpdmf_train_df = train_df  # arpdmf事前归一化:最新：arpdmf跑归一化
 
         
         g_arp = grids["ARPDMF"]
