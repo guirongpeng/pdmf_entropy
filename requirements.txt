@@ -1,0 +1,29 @@
+# FRS 项目依赖
+# 目标环境: CentOS 7 / glibc 2.17 / x86_64 / Python 3.11.5
+#
+# 推荐安装（清华源，临时目录放 /data 避免 /tmp 空间不足）:
+#   cd /data/pengguirong/frs
+#   python3 -m venv .venv
+#   source .venv/bin/activate
+#   export TMPDIR=/data/pengguirong/frs/.pip_tmp && mkdir -p "$TMPDIR"
+#   pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+#
+# 或一键脚本:
+#   bash scripts/install_venv.sh
+
+# 主实验（必装）
+numpy==1.26.4
+pandas==2.2.3
+scikit-learn==1.5.2
+scipy==1.14.1
+numba==0.60.0
+tqdm==4.67.1
+
+# 多模型评估（Boosting: XB / LB / CB）
+xgboost==2.1.4
+lightgbm==4.5.0
+catboost==1.2.7
+
+# 绘图 / diagnose（catboost 会拉取 matplotlib，此处显式锁定）
+matplotlib==3.10.9
+contourpy==1.3.2

@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.pip_tmp/
+catboost_info/
+tmp/
+outputs/
