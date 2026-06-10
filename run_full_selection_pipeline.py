@@ -415,7 +415,9 @@ def main():
 
     # ARPDMF：全部 prepare 耗时取均值，只加一次到总耗时（folds.json 仍仅为各折三阶段约简）
     if arpdmf_prepare_times_fold_sums:
-        t_fuzzy_once = round(float(np.mean(arpdmf_prepare_times_fold_sums)), 6)
+        # t_fuzzy_once = round(float(np.mean(arpdmf_prepare_times_fold_sums)), 6) # [notice]单折
+        t_fuzzy_once = round(float(np.sum(arpdmf_prepare_times_fold_sums)), 6)    # [notice]全部
+
         reduction_time_by_algo["ARPDMF"] = round(
             reduction_time_by_algo.get("ARPDMF", 0.0) + t_fuzzy_once,
             6,

@@ -24,9 +24,8 @@ ROOT = Path(__file__).resolve().parent
 PIPELINE = ROOT / "run_full_selection_pipeline.py"
 PLOT_ARPDMF = ROOT / "plot_arpdmf_surface.py"
 AGGREGATE_MD = ROOT / "diagnose" / "aggregate_outputs_summary_md.py"
-DATAS_DIR = ROOT / "datas"
-# 各数据集写入 outputs/<OUTPUT_PREFIX>/<数据集名>/
-DEFAULT_OUTPUT_PREFIX = "test_datas_2"
+DATAS_DIR = ROOT / "high_datas"
+
 
 def _arpdmf_enabled() -> bool:
     from config import get_enabled_reductions
@@ -56,16 +55,68 @@ def _run_arpdmf_plot(out_dir: Path, dataset_stem: str) -> int:
     print(f"ARPDMF 绘图: {' '.join(cmd)}")
     return subprocess.run(cmd, cwd=str(ROOT)).returncode
 
+# # 各数据集写入 outputs/<OUTPUT_PREFIX>/<数据集名>/
+# DEFAULT_OUTPUT_PREFIX = "high_dimension"
+# # 文件名 -> 目标列（Y）
+# DATASET_TARGETS: dict[str, str] = {
+#     "Toxicity.csv":"class",
+#     # "Gas_sensor_array_under_flow_modulation.csv": "class",
+#     # "Period-Changer.csv":"class",
+#     # "DBWorld_e_mails.csv": "class",
+#     # "MicroMass_pure.csv": "class",
+# }
 
+# 各数据集写入 outputs/<OUTPUT_PREFIX>/<数据集名>/
+DEFAULT_OUTPUT_PREFIX = "high_test"
 # 文件名 -> 目标列（Y）
 DATASET_TARGETS: dict[str, str] = {
+    ## 已完成
+    # "Absenteeism_two.csv": "Absenteeism time in hours",
+    # "breast-cancer-wisconsin.csv": "class",
+    # "car.csv": "class",
+    # "credit-approval.csv": "class",
+    # "flag.csv": "column_7",
+    # "ionosphere.csv": "class",
+    # "monks-1.csv": "class",
+    # "o-ring-erosion-only.csv": "target",
+    # "servo.csv": "target",
+    # "spect-0.csv": "OVERALL_DIAGNOSIS",
+    # "sponge.csv": "target",
+    # "transfusion.csv": "target",
+    # "wdbc.csv": "class",
+    # "wine.csv": "class",
+    # "wpbc.csv": "class",
 
-    "Toxicity.csv":"class",
-    "Gas_sensor_array_under_flow_modulation.csv": "class",
-    "Period-Changer.csv":"class",
-    "DBWorld_e_mails.csv": "class",
-    "MicroMass_pure.csv": "class",
+    # pgr_21_running
+    # "Leukemia_1.csv": "class", # pgr_frs,运行中
+    # "DLBCL.csv": "class", # frs,运行中
+    # lishuai_running
+    "Leukemia_2.csv": "class",
+    "Brain_Tumor_2.csv": "class",
+    "Brain_Tumor_1.csv": "class",
+    "Prostate_Tumor_1.csv": "class",
+    "Leukemia_3.csv": "class",
+    "Lung_Cancer.csv": "class",
+    
 
+    # "zoo.csv": "class",       # 效果一般，pass
+    # "vehicle.csv": "class",     # 效果还行        Done
+    # "german.csv": "class",    # 效果一般          Done
+    # "cleveland.csv": "class",     # 失败
+    # "lymphography.csv": "class",  # 效果可以      Done   
+    # "dermatology.csv": "class",     # 效果可以    Done
+    # "australian.csv": "class",      # 效果可以    Done
+    # "tic-tac-toe.csv":"class",  # 约简不出
+    # "magic.csv":"class",          # 效果一般      Done
+    
+
+
+    ## lishuai 运行中
+    # "Toxicity.csv":"class",   # 21:运行中
+    # "Gas_sensor_array_under_flow_modulation.csv": "class", # fail：类别不平衡
+    # "Period-Changer.csv":"class",
+    # "DBWorld_e_mails.csv": "class",   # 约简不出
+    # "MicroMass_pure.csv": "class",
 }
 
 
@@ -210,5 +261,5 @@ if __name__ == "__main__":
 # 3.	结果汇总（批量结束后自动执行，也可用 --no-aggregate 跳过）
 #       a)	python diagnose/aggregate_outputs_summary_md.py --root outputs/test_datas --out outputs/test_datas/汇总_约简算法对比.md
 
-# python diagnose/aggregate_outputs_summary_md.py --root outputs/test_datas_all_1_opt --out outputs/test_datas_all_1_opt/汇总_约简算法对比.md
-# python diagnose/merge_guiyi_pdmf_aggregate_md.py --baseline outputs/test_datas_2 --pdmf outputs/test_datas_2_归一化 --patch-algos ARPDMF --out outputs/test_datas_2_归一化/汇总_约简算法对比_合并baseline.md
+# python diagnose/aggregate_outputs_summary_md.py --root outputs/test --out outputs/test/汇总_约简算法对比.md
+# python diagnose/merge_guiyi_pdmf_aggregate_md.py --baseline outputs/finally_results --pdmf outputs/finally_results_samll --patch-algos ARPDMF --out outputs/finally_results_samll/汇总_约简算法对比_time_paras.md

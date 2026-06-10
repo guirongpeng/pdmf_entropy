@@ -35,6 +35,24 @@ def sigmoid(x):
         x[:, column] = 1 / (1 + np.exp(a * (x[:, column] - means[column])))
     return x
 
+def Reciprocal(x):
+    """
+    反比例函数
+    :param x: 数据
+    :param a: 参数
+    :return: 隶属度值
+    """ 
+    a = 1
+    x = np.array(x) 
+    for column in range(x.shape[1]):
+        x[:,column] = 1/(x[:,column]-a)
+    return x 
+
+def gaussian_membership(x, sigma=1.0):
+    x = np.array(x, copy=True)
+    for column in range(x.shape[1]):
+        x[:, column] = np.exp(-0.5 * (x[:, column] / sigma) ** 2)
+    return x
 
 def reverse_sigmoid(x):
     a = 0.5
@@ -112,6 +130,10 @@ def reduce_frar(data, train_index, target_name="target", class_counts=None):
         matrix_list.append(sawtooth(array))
     if class_counts >= 5:
         matrix_list.append(sigmoid(array))
+    if class_counts >= 6:
+        matrix_list.append(Reciprocal(array))
+    if class_counts >= 7:
+        matrix_list.append(gaussian_membership(array))
 
     combined_matrix = np.stack(matrix_list, axis=0)
     di_s = []

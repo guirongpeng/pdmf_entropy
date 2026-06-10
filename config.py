@@ -37,8 +37,9 @@ def get_param_grids(num_features: int) -> dict:
 
         # ARPDMF：delta×k×mu_method 笛卡尔积（每折候选数 = |δ|×|k|×|μ|）；与其它算法网格独立
         "ARPDMF": {
-            "delta": [round(x, 3) for x in np.linspace(0.005, 0.01, 5)],
-            "k": [3, 4, 5, 6, 7, 8, 9, 10],
+            # "delta":[0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.008, 0.009, 0.01],
+            "delta":[0.005, 0.006, 0.007, 0.008, 0.009, 0.01],
+            "k": [1,2, 3, 4, 5, 6, 7, 8, 9, 10],
             "mu_method": ["B"],
         },
     }
@@ -56,28 +57,29 @@ def get_model_factories(random_state: int = DEFAULT_RANDOM_STATE) -> dict:
     from sklearn.naive_bayes import GaussianNB
     from sklearn.tree import DecisionTreeClassifier
 
+    n_jobs = 6
     factories = {
-        "RF": lambda: RandomForestClassifier(n_jobs=-1, random_state=random_state),
-        "ET": lambda: ExtraTreesClassifier(n_jobs=-1, random_state=random_state),
-        "BGG": lambda: BaggingClassifier(random_state=random_state, n_jobs=-1),
+        "RF": lambda: RandomForestClassifier(n_jobs=n_jobs, random_state=random_state),
+        "ET": lambda: ExtraTreesClassifier(n_jobs=n_jobs, random_state=random_state),
+        "BGG": lambda: BaggingClassifier(random_state=random_state, n_jobs=n_jobs),
         "GB": lambda: GradientBoostingClassifier(random_state=random_state),
         "SVM": lambda: SVC(random_state=random_state),
         "LSVC": lambda: LinearSVC(random_state=random_state),
         "KNN": lambda: KNeighborsClassifier(),
         "GN": lambda: GaussianNB(),
-        "LR": lambda: LogisticRegression(n_jobs=-1, random_state=random_state),
+        "LR": lambda: LogisticRegression(n_jobs=n_jobs, random_state=random_state),
         # 供 BGG 作为基学习器时可用，但不直接暴露到分组
         "DT_BASE": lambda: DecisionTreeClassifier(random_state=random_state),
     }
 
     try:
         from xgboost import XGBClassifier  # type: ignore
-        factories["XB"] = lambda: XGBClassifier(n_jobs=-1, random_state=random_state, verbosity=0)
+        factories["XB"] = lambda: XGBClassifier(n_jobs=n_jobs, random_state=random_state, verbosity=0)
     except Exception:
         pass
     try:
         from lightgbm import LGBMClassifier  # type: ignore
-        factories["LB"] = lambda: LGBMClassifier(n_jobs=-1, random_state=random_state, verbose=-1)
+        factories["LB"] = lambda: LGBMClassifier(n_jobs=n_jobs, random_state=random_state, verbose=-1)
     except Exception:
         pass
     try:
